@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { CircleUser, Wallet } from "lucide-react"
+import WalletConnection from "./WalletConnectionButton";
 
 export function NavDock() {
   const [expandedNav, setExpandedNav] = useState(false)
@@ -100,6 +101,7 @@ export function NavDock() {
                   Company
                 </Link>
               </li>
+                <WalletConnection/>
             </ul>
           </nav>
         )}

@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavDock } from "@/components/navbar/dock";
+import WalletContextProvider from "@/lib/walletContextProvider";
+import { WalletProvider as CustomWalletProvider } from "@/lib/walletContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,10 +37,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavDock />
-          <main className="pt-16">
-            {children}
-          </main>
+          <WalletContextProvider>
+            <CustomWalletProvider>
+            <NavDock />
+            <main className="pt-16">
+              {children}
+            </main>
+            </CustomWalletProvider>
+          </WalletContextProvider>
         </ThemeProvider>
       </body>
     </html>
