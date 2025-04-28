@@ -1,67 +1,105 @@
 // components/ConnectWalletModal.tsx
 "use client";
 
-import React from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import axios from "axios";
+import { useWalletContext } from "@/lib/walletContext";
+import { BACKEND_URL } from "@/utils";
 
 interface ConnectWalletModalProps {
+  onNext: () => void;
   onClose: () => void;
 }
 
-export default function ConnectWalletModal({  onClose }: ConnectWalletModalProps) {
+export default function ConnectWalletModal({
+  onNext,
+  onClose,
+}: ConnectWalletModalProps) {
+  const {
+    connected,
+    publicKey,
+    select,
+    wallets,
+    connecting,
+    signMessage,
+  } = useWalletContext();
 
-  return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-2xl">
-      {/* Close on background click */}
-      <div className="absolute inset-0" onClick={onClose} />
+  // Local state: have we clicked “Sign with Solana”?
+  const [showWalletList, setShowWalletList] = useState(false);
 
-      {/* Modal box */}
-      <div className="relative z-10 w-[350px] rounded-2xl bg-[#0e0e0e] border border-[#222] p-6 shadow-2xl">
-        {/* Beams/Grid Background */}
-        <div className="absolute inset-0 z-0 bg-[url('/beams-grid.svg')] bg-cover opacity-10 rounded-2xl" />
+  const handleSignWithSolana = () => {
+    setShowWalletList(true);
+  };
 
-        {/* Close Button */}
-        <button
-          className="absolute top-3 right-3 text-white/60 hover:text-white z-10"
-          onClick={onClose}
-        >
-          ×
-        </button>
+  const handleWalletSelect = async (name: string) => {
+    try {
+      await select(name);
+      // wait for `connected` → useEffect will fire
+    } catch (err) {
+      console.error("wallet connection err:", err);
+    }
+  };
 
-        {/* Modal Content */}
-        <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-          {/* Wallet Logos */}
-          <div className="flex items-center gap-3">
-            <div className="bg-[#1c1c1c] p-2 rounded-xl">
-              <Image src="/arrakus_logo.png" alt="Arrakus" width={32} height={32} />
-            </div>
-            <span className="text-white text-lg font-bold">↔</span>
-            <div className="bg-[#1c1c1c] p-2 rounded-xl">
-              <Image src="/wallet_icon.png" alt="Wallet" width={32} height={32} />
-            </div>
-          </div>
+  // As soon as `connected` flips true, sign the message, call backend, then advance
+  useEffect(() => {
+    if (!connected || !publicKey || !signMessage) return;
+    (async () => {
+      try {
+        onNext();
+      } catch (err) {
+        console.error("Error signing message:", err);
+      }
+    })();
+  }, [connected, publicKey, signMessage, onNext]);
 
-          {/* Text */}
-          <h2 className="text-white text-xl font-semibold">Connect Wallet</h2>
-          <p className="text-sm text-gray-400">
-            Signing in with your wallet is required to get the best experience.
-          </p>
+  return (
+    <div className="w-full max-w-sm rounded-2xl p-4 space-y-4">
+      {/* Modal Container */}
+      <div className="relative z-10 w-full rounded-2xl bg-[#0e0e0e] border border-[#222] p-6 shadow-2xl flex flex-col items-center space-y-6">
+        {/* Header */}
+        <h2 className="text-white text-xl font-semibold">Connect Wallet</h2>
+        <p className="text-sm text-gray-400 text-center">
+          Signing in with your wallet is required to get the best experience.
+        </p>
 
-          {/* CTA Buttons */}
-          <button className="mt-4 w-full py-3 bg-green-500 hover:bg-green-600 text-black font-semibold rounded-full transition">
-            Sign in with Ethereum
-          </button>
+        {/* Step 1: Custom Blue Button */}
+        {!showWalletList ? (
           <button
-            onClick={onClose}
-            className="w-full py-3 border border-gray-700 text-gray-400 rounded-full hover:text-white transition"
+            onClick={handleSignWithSolana}
+            className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full transition"
           >
-            Do it later
+            Sign with Solana
           </button>
-        </div>
+        ) : (
+          /* Step 2: List of Wallet Adapters */
+          <div className="w-full flex flex-col gap-3 overflow-y-auto">
+            {wallets.map((wallet) => (
+              <button
+                key={wallet.adapter.name}
+                onClick={() => handleWalletSelect(wallet.adapter.name)}
+                className="w-full py-2 flex items-center gap-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+              >
+                <Image
+                  src={wallet.adapter.icon}
+                  alt={wallet.adapter.name}
+                  width={24}
+                  height={24}
+                />
+                <span className="flex-1 text-left">{wallet.adapter.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Fallback Close */}
+        <button
+          onClick={onClose}
+          className="w-full py-3 border border-gray-700 text-gray-400 rounded-full hover:text-white transition"
+        >
+          Do it later
+        </button>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
