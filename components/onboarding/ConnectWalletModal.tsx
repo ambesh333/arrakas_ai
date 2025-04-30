@@ -3,9 +3,8 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import axios from "axios";
 import { useWalletContext } from "@/lib/walletContext";
-import { BACKEND_URL } from "@/utils";
+import { WalletName } from "@solana/wallet-adapter-base";
 
 interface ConnectWalletModalProps {
   onNext: () => void;
@@ -21,7 +20,6 @@ export default function ConnectWalletModal({
     publicKey,
     select,
     wallets,
-    connecting,
     signMessage,
   } = useWalletContext();
 
@@ -34,7 +32,7 @@ export default function ConnectWalletModal({
 
   const handleWalletSelect = async (name: string) => {
     try {
-      await select(name);
+      await select(name as WalletName);
       // wait for `connected` → useEffect will fire
     } catch (err) {
       console.error("wallet connection err:", err);

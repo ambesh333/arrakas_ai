@@ -24,7 +24,6 @@ export function NewsFeedTable({ articles }: NewsFeedTableProps) {
     currentPage * rowsPerPage
   )
 
-  const handlePageChange = (page: number) => setCurrentPage(page)
   const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1)
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1)
 
@@ -42,7 +41,7 @@ export function NewsFeedTable({ articles }: NewsFeedTableProps) {
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        {paginatedArticles.map((article, index) => (
+        {paginatedArticles.map((article) => (
           <div
             key={article.url}
             onClick={() => window.open(article.url, '_blank')}

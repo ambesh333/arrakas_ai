@@ -3,13 +3,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import type { WalletName } from "@solana/wallet-adapter-base";
+
 
 interface WalletContextProps {
   connected: boolean;
   publicKey: string | null;
   balance: number | null;
   disconnectWallet: () => void;
-  select: (walletName: any | null) => void;
+  select: (walletName: WalletName | null) => void;
   wallets: Array<{ adapter: { name: string; icon: string } }>;
   connecting: boolean;
   signMessage: ((message: Uint8Array) => Promise<Uint8Array>) | undefined;

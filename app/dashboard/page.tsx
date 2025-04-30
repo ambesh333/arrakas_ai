@@ -1,46 +1,30 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import {
     Activity,
-    AlertCircle,
     BarChart3,
-    Bell,
-    CircleOff,
     Command,
     Cpu,
     Database,
-    Download,
     Globe,
     HardDrive,
-    Hexagon,
     LineChart,
-    Lock,
     type LucideIcon,
     MessageSquare,
-    Mic,
-    Moon,
-    Radio,
     RefreshCw,
-    Search,
     Settings,
     Shield,
-    Sun,
     Terminal,
-    Wifi,
-    Zap,
+    Wifi
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
+
 import {
     Carousel,
     CarouselContent,
@@ -52,36 +36,11 @@ import { NewsFeedTable } from "@/components/NewsFeedTable"
 
 
 export default function Dashboard() {
-    const [theme, setTheme] = useState<"dark" | "light">("dark")
     const [systemStatus, setSystemStatus] = useState(85)
     const [cpuUsage, setCpuUsage] = useState(42)
     const [memoryUsage, setMemoryUsage] = useState(68)
     const [networkStatus, setNetworkStatus] = useState(92)
-    const [securityLevel, setSecurityLevel] = useState(75)
-    const [currentTime, setCurrentTime] = useState(new Date())
-    const [isLoading, setIsLoading] = useState(true)
 
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-
-    // Simulate data loading
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false)
-        }, 2000)
-
-        return () => clearTimeout(timer)
-    }, [])
-
-    // Update time
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date())
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [])
-
-    // Simulate changing data
     useEffect(() => {
         const interval = setInterval(() => {
             setCpuUsage(Math.floor(Math.random() * 30) + 30)
@@ -92,111 +51,6 @@ export default function Dashboard() {
 
         return () => clearInterval(interval)
     }, [])
-
-    // Particle effect
-    useEffect(() => {
-        const canvas = canvasRef.current
-        if (!canvas) return
-
-        const ctx = canvas.getContext("2d")
-        if (!ctx) return
-
-        canvas.width = canvas.offsetWidth
-        canvas.height = canvas.offsetHeight
-
-        const particles: Particle[] = []
-        const particleCount = 100
-
-        class Particle {
-            x: number
-            y: number
-            size: number
-            speedX: number
-            speedY: number
-            color: string
-
-            constructor() {
-                this.x = canvas ? Math.random() * canvas.width : 0
-                this.y = canvas ? Math.random() * canvas.height : 0
-                this.size = Math.random() * 3 + 1
-                this.speedX = (Math.random() - 0.5) * 0.5
-                this.speedY = (Math.random() - 0.5) * 0.5
-                this.color = `rgba(${Math.floor(Math.random() * 100) + 100}, ${Math.floor(Math.random() * 100) + 150}, ${Math.floor(Math.random() * 55) + 200}, ${Math.random() * 0.5 + 0.2})`
-            }
-
-            update() {
-                this.x += this.speedX
-                this.y += this.speedY
-
-                if (canvas && this.x > canvas.width) this.x = 0
-                if (canvas && this.x < 0) this.x = canvas.width
-                if (canvas && this.y > canvas.height) this.y = 0
-                if (this.y < 0 && canvas) this.y = canvas.height
-            }
-
-            draw() {
-                if (!ctx) return
-                ctx.fillStyle = this.color
-                ctx.beginPath()
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-                ctx.fill()
-            }
-        }
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle())
-        }
-
-        function animate() {
-            if (!ctx || !canvas) return
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-            for (const particle of particles) {
-                particle.update()
-                particle.draw()
-            }
-
-            requestAnimationFrame(animate)
-        }
-
-        animate()
-
-        const handleResize = () => {
-            if (!canvas) return
-            canvas.width = canvas.offsetWidth
-            canvas.height = canvas.offsetHeight
-        }
-
-        window.addEventListener("resize", handleResize)
-
-        return () => {
-            window.removeEventListener("resize", handleResize)
-        }
-    }, [])
-
-    // Toggle theme
-    const toggleTheme = () => {
-        setTheme(theme === "dark" ? "light" : "dark")
-    }
-
-    // Format time
-    const formatTime = (date: Date) => {
-        return date.toLocaleTimeString("en-US", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-        })
-    }
-
-    // Format date
-    const formatDate = (date: Date) => {
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-        })
-    }
 
     const apiData = {
         "data": [
@@ -549,7 +403,7 @@ export default function Dashboard() {
                                     <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
                                     <div className="space-y-3">
                                         <StatusItem label="Core Systems" value={systemStatus} color="cyan" />
-                                        <StatusItem label="Security" value={securityLevel} color="green" />
+                                        {/* <StatusItem label="Security" value={securityLevel} color="green" /> */}
                                         <StatusItem label="Network" value={networkStatus} color="blue" />
                                     </div>
                                 </div>
@@ -749,7 +603,7 @@ export default function Dashboard() {
                                 </CardHeader>
                                 <Carousel autoPlayInterval={5000} className="w-full max-w-xs ml-5">
                                     <CarouselContent>
-                                        {apiData.data.map((coin: { name: string; symbol: string; roi: { [key: string]: number } }, index: number) => (
+                                        {apiData.data.map((coin: { name: string; symbol: string; roi: { [key: string]: number } }) => (
                                             <CarouselItem key={coin.symbol}>
                                                 <div className="p-1">
                                                     <ROICard
@@ -1131,122 +985,3 @@ function StorageItem({
     )
 }
 
-// Alert item component
-function AlertItem({
-    title,
-    time,
-    description,
-    type,
-}: {
-    title: string
-    time: string
-    description: string
-    type: "info" | "warning" | "error" | "success" | "update"
-}) {
-    const getTypeStyles = () => {
-        switch (type) {
-            case "info":
-                return { icon: Info, color: "text-blue-500 bg-blue-500/10 border-blue-500/30" }
-            case "warning":
-                return { icon: AlertCircle, color: "text-amber-500 bg-amber-500/10 border-amber-500/30" }
-            case "error":
-                return { icon: AlertCircle, color: "text-red-500 bg-red-500/10 border-red-500/30" }
-            case "success":
-                return { icon: Check, color: "text-green-500 bg-green-500/10 border-green-500/30" }
-            case "update":
-                return { icon: Download, color: "text-cyan-500 bg-cyan-500/10 border-cyan-500/30" }
-            default:
-                return { icon: Info, color: "text-blue-500 bg-blue-500/10 border-blue-500/30" }
-        }
-    }
-
-    const { icon: Icon, color } = getTypeStyles()
-
-    return (
-        <div className="flex items-start space-x-3">
-            <div className={`mt-0.5 p-1 rounded-full ${color.split(" ")[1]} ${color.split(" ")[2]}`}>
-                <Icon className={`h-3 w-3 ${color.split(" ")[0]}`} />
-            </div>
-            <div>
-                <div className="flex items-center">
-                    <div className="text-sm font-medium text-slate-200">{title}</div>
-                    <div className="ml-2 text-xs text-slate-500">{time}</div>
-                </div>
-                <div className="text-xs text-slate-400">{description}</div>
-            </div>
-        </div>
-    )
-}
-
-// Communication item component
-function CommunicationItem({
-    sender,
-    time,
-    message,
-    avatar,
-    unread,
-}: {
-    sender: string
-    time: string
-    message: string
-    avatar: string
-    unread?: boolean
-}) {
-    return (
-        <div className={`flex space-x-3 p-2 rounded-md ${unread ? "bg-slate-800/50 border border-slate-700/50" : ""}`}>
-            <Avatar className="h-8 w-8">
-                <AvatarImage src={avatar} alt={sender} />
-                <AvatarFallback className="bg-slate-700 text-cyan-500">{sender.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-                <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium text-slate-200">{sender}</div>
-                    <div className="text-xs text-slate-500">{time}</div>
-                </div>
-                <div className="text-xs text-slate-400 mt-1">{message}</div>
-            </div>
-            {unread && (
-                <div className="flex-shrink-0 self-center">
-                    <div className="h-2 w-2 rounded-full bg-cyan-500"></div>
-                </div>
-            )}
-        </div>
-    )
-}
-
-// Action button component
-function ActionButton({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
-    return (
-        <Button
-            variant="outline"
-            className="h-auto py-3 px-3 border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 flex flex-col items-center justify-center space-y-1 w-full"
-        >
-            <Icon className="h-5 w-5 text-cyan-500" />
-            <span className="text-xs">{label}</span>
-        </Button>
-    )
-}
-
-// Define the CoinData interface
-interface CoinData {
-    name: string;
-    symbol: string;
-    roi: {
-        "24h": number;
-        "7d": number;
-        "30d": number;
-        "YTD": number;
-        "1y": number;
-    };
-}
-
-// Add missing imports
-function Info(props: React.ComponentProps<typeof AlertCircle>) {
-    return <AlertCircle {...props} />
-}
-
-interface CheckProps extends React.ComponentProps<typeof Shield> { }
-
-function Check(props: CheckProps) {
-    return <Shield {...props} />
-}

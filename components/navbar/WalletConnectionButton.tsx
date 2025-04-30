@@ -16,6 +16,7 @@ import { useWalletContext } from "@/lib/walletContext"
 import axios from "axios";
 
 import { BACKEND_URL } from '@/utils'
+import { WalletName } from "@solana/wallet-adapter-base";
 
 const WalletConnection = () => {
   const {
@@ -37,7 +38,7 @@ const WalletConnection = () => {
   const handleWalletSelect = async (walletName: string) => {
     if (walletName) {
       try {
-        select(walletName);
+        select(walletName as WalletName);
         setOpen(false);
       } catch (error) {
         console.log("wallet connection err : ", error);
