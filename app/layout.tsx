@@ -40,7 +40,7 @@ export default function RootLayout({
           <WalletContextProvider>
             <CustomWalletProvider>
             <NavDock />
-            <main className="pt-16">
+            <main >
               {children}
             </main>
             </CustomWalletProvider>
