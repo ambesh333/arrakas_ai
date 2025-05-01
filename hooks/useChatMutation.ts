@@ -33,6 +33,7 @@ export const useChatMutation = (
           tool_calls: response.data?.tool_calls,
           trxn: response.data?.trxn,
           prediction: response.data?.prediction,
+          contractAddress: response.data?.contractAddress
         },
         threadId: response.data.threadId,
       };
