@@ -18,7 +18,11 @@ const BubbleChart: React.FC<BubbleChartProps> = ({ contractAddress }) => {
         <div className="absolute inset-0 bg-gray-300 animate-pulse" />
       )}
       <div className="flex w-full h-full min-w-[700px]  min-h-[400px] flex-col">
-         <iframe src="https://app.bubblemaps.io/bsc/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95" />
+        <iframe
+            src={`https://app.bubblemaps.io/bsc/token/${contractAddress}`}
+            className="w-full h-full"
+            frameBorder={0}
+        />
       </div>
     </div>
   );

@@ -6,10 +6,6 @@ import { Button } from '../ui/button';
 const LeftComponent: React.FC = () => {
     return (
         <div className="col-span-12 md:col-span-3 lg:col-span-2 ">
-            <iframe src="https://app.bubblemaps.io/bsc/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95" />
-            <iframe src="https://app.bubblemaps.io/bsc/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95?theme=themename&loading_color=ffffff" />
-            <iframe src="https://app.bubblemaps.io/bsc/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95?prevent_scroll_zoom" />
-            <iframe src="https://app.bubblemaps.io/bsc/token/0x603c7f932ed1fc6575303d8fb018fdcbb0f39a95?small_text&hide_context" />
         <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
             <CardContent className="p-4">
                 <nav className="space-y-2">
