@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { NavDock } from "@/components/navbar/dock";
 import WalletContextProvider from "@/lib/walletContextProvider";
 import { WalletProvider as CustomWalletProvider } from "@/lib/walletContext";
+import { ReduxProviders } from "@/lib/ReduxProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,14 +38,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <WalletContextProvider>
-            <CustomWalletProvider>
-            <NavDock />
-            <main >
-              {children}
-            </main>
-            </CustomWalletProvider>
-          </WalletContextProvider>
+          <ReduxProviders>
+
+            <WalletContextProvider>
+              <CustomWalletProvider>
+                <NavDock />
+                <main >
+                  {children}
+                </main>
+              </CustomWalletProvider>
+            </WalletContextProvider>
+          </ReduxProviders>
         </ThemeProvider>
       </body>
     </html>
