@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
-import { Activity, Command, Database, Globe, LucideIcon, MessageSquare, Settings, Shield, Terminal } from 'lucide-react';
+import { Command, LucideIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const LeftComponent: React.FC = () => {
@@ -9,19 +9,8 @@ const LeftComponent: React.FC = () => {
         <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm h-full">
             <CardContent className="p-4">
                 <nav className="space-y-2">
-                    <NavItem icon={Command} label="Dashboard" active />
-                    <NavItem icon={Activity} label="Diagnostics" />
-                    <NavItem icon={Database} label="Data Center" />
-                    <NavItem icon={Globe} label="Network" />
-                    <NavItem icon={Shield} label="Security" />
-                    <NavItem icon={Terminal} label="Console" />
-                    <NavItem icon={MessageSquare} label="Communications" />
-                    <NavItem icon={Settings} label="Settings" />
+                    <NavItem icon={Command} label="AI CHAT" active />
                 </nav>
-
-                <div className="mt-8 pt-6 border-t border-slate-700/50">
-                    <div className="text-xs text-slate-500 mb-2 font-mono">SYSTEM STATUS</div>
-                </div>
             </CardContent>
         </Card>
     </div>
