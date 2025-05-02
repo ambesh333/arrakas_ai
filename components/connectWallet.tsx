@@ -6,47 +6,54 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import type { WalletName } from "@solana/wallet-adapter-base";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { setSigned } from "@/store/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setSigned, resetSigned } from "@/store/authSlice";
+import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 
 export default function ConnectWallet() {
-  const {
-    publicKey,
-    wallets,
-    select,
-    connect,
-    signMessage,
-    disconnect,
-  } = useWallet();
-
-  const router = useRouter();
+  const { publicKey, wallets, select, connect, signMessage, disconnect } =
+    useWallet();
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const [isModalOpen, setIsModalOpen]         = useState(false);
-  const [loading, setLoading]                 = useState(false);
-  const [signature, setSignature]             = useState<string | null>(null);
-  const [mounted, setMounted]                 = useState(false);
+  // Redux-driven signed state
+  const reduxSignature = useSelector((s: RootState) => s.auth.signature);
+  const hasSigned = Boolean(reduxSignature);
+
+  // Local UI state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<WalletName | "">("");
+  const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const isConnected = Boolean(publicKey);
-  const hasSigned   = Boolean(signature);
 
+  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Automatically trigger signing once connected for the first time
+  useEffect(() => {
+    if (isConnected && !hasSigned && selectedWallet) {
+      handleSign();
+    }
+  }, [isConnected, hasSigned, selectedWallet]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Main button: connect (opens modal) or disconnect
   const handleButtonClick = () => {
     if (!isConnected) {
       setIsModalOpen(true);
-    } else if (!hasSigned) {
-      handleSign();
     } else {
       handleDisconnect();
     }
   };
 
+  // Wallet selection → connect
   const handleWalletSelect = useCallback(
     async (walletName: WalletName) => {
+      setSelectedWallet(walletName);
       select(walletName);
       setIsModalOpen(false);
 
@@ -62,6 +69,7 @@ export default function ConnectWallet() {
     [select, connect]
   );
 
+  // Sign off-chain message
   const handleSign = useCallback(async () => {
     if (!publicKey || !signMessage) return;
     setLoading(true);
@@ -71,11 +79,8 @@ export default function ConnectWallet() {
       );
       const signedBuf = await signMessage(msg);
       const hex = Buffer.from(signedBuf).toString("hex");
-      // Update local state so the button flips to "Disconnect"
-      setSignature(hex);
-      // Dispatch to Redux
+
       dispatch(setSigned(hex));
-      // Redirect after signing
       router.push("/chat");
     } catch (err) {
       console.error("Signing failed", err);
@@ -84,17 +89,31 @@ export default function ConnectWallet() {
     }
   }, [publicKey, signMessage, dispatch, router]);
 
+  // Disconnect and reset auth
   const handleDisconnect = useCallback(async () => {
     setLoading(true);
     try {
       await disconnect();
-      setSignature(null);
+      dispatch(resetSigned());
+      setSelectedWallet("");
     } catch (err) {
       console.error("Disconnect failed", err);
     } finally {
       setLoading(false);
     }
-  }, [disconnect]);
+  }, [disconnect, dispatch]);
+
+  // Determine button label
+  let label: string;
+  if (loading) {
+    label = "Processing...";
+  } else if (!isConnected) {
+    label = "Connect Wallet";
+  } else if (isConnected && !hasSigned) {
+    label = "Signing...";
+  } else {
+    label = "Disconnect Wallet";
+  }
 
   return (
     <div className="relative inline-block">
@@ -112,16 +131,9 @@ export default function ConnectWallet() {
           ${hasSigned
             ? "bg-red-500/20 border-red-400/30 hover:bg-red-500/30 animate-pulse"
             : ""}
-          ${loading ? "opacity-50 cursor-not-allowed" : ""}
         `}
       >
-        {loading
-          ? "Processing..."
-          : !isConnected
-          ? "Connect Wallet"
-          : !hasSigned
-          ? "Sign with Solana"
-          : "Disconnect Wallet"}
+        {label}
       </button>
 
       {isModalOpen && mounted && (
