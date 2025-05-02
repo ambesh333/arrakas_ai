@@ -1,10 +1,8 @@
-// /contexts/WalletContext.tsx
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import type { WalletName } from "@solana/wallet-adapter-base";
-
+import { WalletName } from "@solana/wallet-adapter-base";
 
 interface WalletContextProps {
   connected: boolean;
@@ -58,7 +56,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     });
 
-    return () => setConnected(false); 
+    return () => setConnected(false); // Clean up when the component unmounts
   }, [publicKey, connection]);
 
   const disconnectWallet = async () => {

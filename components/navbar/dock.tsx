@@ -1,12 +1,23 @@
 "use client";
-import React, { useState } from "react";
+
+import React from "react";
+import { useSelector } from "react-redux";
+
+import { useRouter } from "next/navigation";
 import { MenuBar } from "./navbar";
+import { RootState } from "@/store/store";
+import Image from "next/image";
 
 export function NavDock() {
-  const [expandedNav, setExpandedNav] = useState(false);
+  const expandedNav = useSelector((state: RootState) => state.nav.expanded);
+  const router = useRouter();
 
-  const toggleNav = () => {
-    setExpandedNav(!expandedNav);
+  const handleLogoClick = async () => {
+    try {
+      router.push("/");
+    } catch (err) {
+      console.error("Logo click failed", err);
+    }
   };
 
   return (
@@ -19,10 +30,18 @@ export function NavDock() {
           {/* Main navbar */}
           <div className="col-span-4 flex items-center space-x-4">
             <button
-              onClick={toggleNav}
-              className="text-[#7ecff5] hover:text-[#7ecff5] transition-colors text-2xl font-bold"
+              onClick={handleLogoClick}
+              className="transition-colors text-2xl font-bold"
             >
-              A
+              <div className="p-3 bg-slate-900/30 backdrop-blur-md rounded-xl border border-slate-500/20 shadow-lg">
+                <Image
+                  src="/arrakus_logo-transparent.png"
+                  alt="Arrakus Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+              </div>
             </button>
             <MenuBar />
           </div>
@@ -42,10 +61,18 @@ export function NavDock() {
         <div className="flex justify-center py-8">
           <div className="w-2/3 flex items-center space-x-4 justify-center">
             <button
-              onClick={toggleNav}
+              onClick={handleLogoClick}
               className="text-[#7ecff5] hover:text-[#7ecff5] transition-colors text-2xl font-bold"
             >
-              A
+              <div className="p-3 bg-slate-900/30 backdrop-blur-md rounded-xl border border-slate-500/20 shadow-lg">
+                <Image
+                  src="/arrakus_logo-transparent.png"
+                  alt="Arrakus Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
+              </div>
             </button>
             <MenuBar />
           </div>
