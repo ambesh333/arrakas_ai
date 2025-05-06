@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Check, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Referral() {
   const [copied, setCopied] = useState(false);
@@ -45,25 +45,31 @@ export default function Referral() {
                   {copied ? "Copied" : "Copy"}
                 </button>
               </div>
+            <Button className="w-full" size="lg">Explore App</Button>
             </div>
           </div>
           {/* Footer */}
-          <div className="w-full flex justify-between items-center text-xs text-zinc-400 bg-transparent px-8 py-4 border-t border-zinc-700/60">
-            <span className="hover:underline cursor-pointer font-sans">Twitter</span>
-            <span className="font-semibold text-white font-mono">arrakas</span>
-            <span className="hover:underline cursor-pointer font-sans">Docs</span>
+          <div className="w-full flex flex-col gap-4 px-8 pb-4">
+            <div className="w-full flex justify-between items-center text-xs text-zinc-400 bg-transparent border-t border-zinc-700/60 pt-4">
+              <span className="hover:underline cursor-pointer font-sans">Twitter</span>
+              <span className="font-semibold text-white font-mono">arrakas</span>
+              <span className="hover:underline cursor-pointer font-sans">Docs</span>
+            </div>
           </div>
         </div>
 
         {/* Right Panel (Image) */}
         <div className="hidden md:block w-[60%] h-full relative rounded-2xl overflow-hidden">
-          <Image
-            src="/refer_earn.png" // Replace with your actual image
-            alt="Referal Program"
-            fill
-            className="object-cover"
-          />
-        </div>
+        <video
+          src="/gold_arrakas.mp4"
+          className="object-cover w-full h-full"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      </div>
+
       </div>
     </div>
   );
