@@ -3,6 +3,8 @@
 import WalletConnection from "@/components/connectWallet";
 import React from "react";
 import { RetroGrid } from "@/components/magicui/retro-grid";
+import Onboarding from "@/components/onboarding";
+import SignInButton from "@/components/SignInButton";
 
 export default function Parent() {
   return (
@@ -31,6 +33,8 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <WalletConnection />
+              <SignInButton/>
+              <Onboarding />
             </div>
           </div>
         </div>

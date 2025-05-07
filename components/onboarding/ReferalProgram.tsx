@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Referral() {
   const [copied, setCopied] = useState(false);
   const referralCode = "ARRA-100X-YOU";
+  const router = useRouter();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(referralCode);
@@ -45,7 +47,7 @@ export default function Referral() {
                   {copied ? "Copied" : "Copy"}
                 </button>
               </div>
-            <Button className="w-full" size="lg">Explore App</Button>
+            <Button className="w-full" size="lg" onClick={() => router.push("/chat")}>Explore App</Button>
             </div>
           </div>
           {/* Footer */}
@@ -61,7 +63,7 @@ export default function Referral() {
         {/* Right Panel (Image) */}
         <div className="hidden md:block w-[60%] h-full relative rounded-2xl overflow-hidden">
         <video
-          src="/gold_arrakas.mp4"
+          src="/thunder_arrakas.mp4"
           className="object-cover w-full h-full"
           autoPlay
           loop

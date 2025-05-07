@@ -9,7 +9,7 @@ import { WalletName } from "@solana/wallet-adapter-base";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setSigned, resetSigned } from "@/store/authSlice";
+import { resetSigned } from "@/store/authSlice";
 
 interface ConnectWalletProps {
   onConnect?: () => void;
@@ -46,7 +46,7 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
       try {
         setSelectedWallet(walletName);
         select(walletName);
-        await connect(); // triggers modal if needed
+        await connect(); 
       } catch (err) {
         console.error("Wallet connection failed:", err);
       } finally {
@@ -60,42 +60,30 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
     if (!publicKey || !signMessage) return;
     setLoading(true);
     try {
-      // 1. Fetch nonce
-      const nonceRes = await fetch("http://localhost:8000/auth/nounce", {
-        method: "GET",
-        credentials: "include",
-      });
-      const { nonce } = await nonceRes.json();
-      // Optionally store nonce in sessionStorage for debugging or future use
-      sessionStorage.setItem("signup_nonce", nonce);
+      const message = "Sign in to Arrakas AI";
+      const encodedMessage = new TextEncoder().encode(message);
+      const signedMessage = await signMessage(encodedMessage);
+      const signature = Buffer.from(signedMessage).toString("hex");
 
-      // 2. Sign the nonce
-      const msgBytes = new TextEncoder().encode(nonce);
-      const signedBytes = await signMessage(msgBytes);
-      const signature = Buffer.from(signedBytes).toString("hex");
-
-      // 3. POST to /api/auth/signup
       const res = await fetch("http://localhost:8000/auth/signup", {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           publicKey: publicKey.toBase58(),
           signature,
-          nonce,
         }),
       });
       const data = await res.json();
       if (data.user) {
-        dispatch(setSigned(signature));
         if (onConnect) onConnect();
       }
     } catch (err) {
-      console.error("Sign up failed", err);
+      console.error("Sign in failed", err);
     } finally {
       setLoading(false);
     }
-  }, [publicKey, signMessage, dispatch, onConnect]);
+  }, [publicKey, signMessage, dispatch, onConnect, router]);
 
   const handleDisconnect = useCallback(async () => {
     setLoading(true);
