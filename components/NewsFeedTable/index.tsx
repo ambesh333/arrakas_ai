@@ -14,7 +14,7 @@ interface NewsFeedTableProps {
   articles: Article[]
 }
 
-export function NewsFeedTable({ articles }: NewsFeedTableProps) {
+export function NewsFeedTable({ articles = [] }: NewsFeedTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const rowsPerPage = 3
 

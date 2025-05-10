@@ -13,7 +13,7 @@ const initialState: ArticlesState = {
 };
 
 export const fetchArticles = createAsyncThunk('articles/fetchArticles', async () => {
-    const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001";
+    const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
     const response = await fetch(`${baseEndpoint}/news/feed`); 
     return response.json();
 });

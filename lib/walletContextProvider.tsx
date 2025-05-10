@@ -12,7 +12,7 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { clusterApiUrl } from "@solana/web3.js";
-import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
+// import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
 
 const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const network = WalletAdapterNetwork.Devnet;
@@ -29,10 +29,11 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>3
-      <CivicAuthProvider>
+      <WalletProvider wallets={wallets} autoConnect>
+      {/* <CivicAuthProvider>
           {children}
-        </CivicAuthProvider>
+        </CivicAuthProvider> */}
+        {children}
       </WalletProvider>
     </ConnectionProvider>
   );
