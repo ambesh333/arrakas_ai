@@ -29,10 +29,11 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>3
-      <CivicAuthProvider>
+      <WalletProvider wallets={wallets} autoConnect>
+      {/* <CivicAuthProvider>
           {children}
-        </CivicAuthProvider>
+        </CivicAuthProvider> */}
+        {children}
       </WalletProvider>
     </ConnectionProvider>
   );

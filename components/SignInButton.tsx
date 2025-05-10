@@ -1,19 +1,24 @@
 "use client";
 
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import GlowButton from "./ui/glowButton";
+import OnboardingModal, { OnboardingModalRef } from "./onboarding/OnboardingModal";
 
 export default function SignInButton() {
+  const modalRef = useRef<OnboardingModalRef>(null);
   const { publicKey, signMessage } = useWallet();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSignIn = async () => {
-    if (!publicKey || !signMessage) return;
     setLoading(true);
     try {
+      if (!publicKey || !signMessage) {
+        modalRef.current?.open();
+        return;
+      }
       const message = "Sign in to Arrakas AI";
       const encodedMessage = new TextEncoder().encode(message);
       const signedMessage = await signMessage(encodedMessage);
@@ -33,23 +38,36 @@ export default function SignInButton() {
         if (data.user) {
           router.push("/chat");
         } else {
-          console.error("Sign in failed", res.status);
+          modalRef.current?.open();
         }
       } else {
-        // If 401 or 404, treat as not signed up
-        console.error("Sign in failed", res.status);
+        modalRef.current?.open();
       }
-    } catch (err) {
-      console.error("Sign in failed", err);
+    } catch (err: any) {
+      if (err.name === "WalletNotSelectedError") {
+        modalRef.current?.open();
+      } else {
+        console.error("Sign in failed", err);
+        modalRef.current?.open();
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Button onClick={handleSignIn} disabled={loading }>
-      {loading ? "Signing In..." : "Sign In"}
-    </Button>
+    <>
+    <div
+      onClick={!loading ? handleSignIn : undefined}
+      className={loading ? 'pointer-events-none opacity-60' : ''}
+      style={{ display: 'inline-block' }}
+    >
+      <GlowButton className="w-full px-10 text-lg" variant={"blue"}>
+        {loading ? "Signing In..." : "Sign In"}
+      </GlowButton>
+    </div>
+    <OnboardingModal ref={modalRef} />
+    </>
   );
 }
 
