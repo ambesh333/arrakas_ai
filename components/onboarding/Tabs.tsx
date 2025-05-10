@@ -7,21 +7,12 @@ import ConnectWallet from "./ConnectWallet";
 import Referral_Earn from "./ReferalProgram";
 import SignIn from "./SIgnIn";
 
-interface Tab {
-  id: string;
-  label: string;
-  content: React.ReactNode;
-  disabled: boolean;
-}
-
 interface OnboardingTabsProps {
-  tabs?: Tab[];
   defaultTab?: string;
   className?: string;
 }
 
 const OnboardingTabs = ({
-  tabs: _tabs,
   defaultTab,
   className,
 }: OnboardingTabsProps) => {

@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import type { FC } from "react";
-import Image from "next/image";
-import { Check, Copy } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface SignInProps {
@@ -11,14 +10,6 @@ interface SignInProps {
 }
 
 const SignIn: FC<SignInProps> = ({ onJoinNow }) => {
-  const [copied, setCopied] = useState(false);
-  const referralCode = "ARRA-100X-YOU";
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(referralCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="flex w-full h-full items-center justify-center p-4">
@@ -29,7 +20,7 @@ const SignIn: FC<SignInProps> = ({ onJoinNow }) => {
           <div className="w-full px-6 mb-6 mt-3">
             <div className="rounded-xl shadow-lg p-6 bg-zinc-800 flex flex-col items-center mt-2">
               <h1 className="text-2xl font-extrabold text-white font-sans mb-2 text-center">Welcome to the Future of Web3</h1>
-              <p className="text-zinc-200 font-mono text-center mb-4 text-sm">We're blending AI with Web3 to make decentralized tech seamless for everyone. No jargon, no complexity — just powerful tools wrapped in simplicity.</p>
+              <p className="text-zinc-200 font-mono text-center mb-4 text-sm">We &apos;re blending AI with Web3 to make decentralized tech seamless for everyone. No jargon, no complexity — just powerful tools wrapped in simplicity.</p>
               <ul className="w-full flex flex-col gap-2 mb-4">
                 <li className="flex items-center gap-2 text-zinc-100 font-sans text-base">
                   <span className="text-green-400"><Check size={18} /></span>
@@ -37,7 +28,7 @@ const SignIn: FC<SignInProps> = ({ onJoinNow }) => {
                 </li>
                 <li className="flex items-center gap-2 text-zinc-100 font-sans text-base">
                   <span className="text-green-400"><Check size={18} /></span>
-                  Smart, secure sign-in — no seed phrases or passwords
+                  Smart &apos; secure sign-in — no seed phrases or passwords
                 </li>
                 <li className="flex items-center gap-2 text-zinc-100 font-sans text-base">
                   <span className="text-green-400"><Check size={18} /></span>

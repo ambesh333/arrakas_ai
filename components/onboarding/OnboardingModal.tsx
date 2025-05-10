@@ -24,4 +24,6 @@ const OnboardingModal = forwardRef<OnboardingModalRef>((props, ref) => {
   ) : null;
 });
 
+OnboardingModal.displayName = "OnboardingModal";
+
 export default OnboardingModal;

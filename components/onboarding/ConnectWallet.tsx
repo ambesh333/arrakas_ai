@@ -6,10 +6,9 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletName } from "@solana/wallet-adapter-base";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { resetSigned } from "@/store/authSlice";
+
 
 interface ConnectWalletProps {
   onConnect?: () => void;
@@ -21,12 +20,9 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
     publicKey,
     connect,
     select,
-    disconnect,
     signMessage,
   } = useWallet();
 
-  const dispatch = useDispatch();
-  const router = useRouter();
   const reduxSignature = useSelector((s: RootState) => s.auth.signature);
 
   const [loading, setLoading] = useState(false);
@@ -84,26 +80,26 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
     } finally {
       setLoading(false);
     }
-  }, [publicKey, signMessage, dispatch, onConnect, router]);
+  }, [publicKey, signMessage, onConnect]);
 
-  const handleDisconnect = useCallback(async () => {
-    setLoading(true);
-    try {
-      await disconnect();
-      dispatch(resetSigned());
-      setSelectedWallet(null);
-    } catch (err) {
-      console.error("Disconnect failed", err);
-    } finally {
-      setLoading(false);
-    }
-  }, [disconnect, dispatch]);
+  // const handleDisconnect = useCallback(async () => {
+  //   setLoading(true);
+  //   try {
+  //     await disconnect();
+  //     dispatch(resetSigned());
+  //     setSelectedWallet(null);
+  //   } catch (err) {
+  //     console.error("Disconnect failed", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [disconnect, dispatch]);
 
   useEffect(() => {
     if (isConnected && !hasSigned && selectedWallet) {
       handleSign();
     }
-  }, [isConnected, hasSigned, selectedWallet]); 
+  }, [isConnected, hasSigned, selectedWallet, handleSign]); 
 
   if (!mounted) return null;
 

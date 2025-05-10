@@ -44,8 +44,13 @@ export default function SignInButton() {
       } else {
         modalRef.current?.open();
       }
-    } catch (err: any) {
-      if (err.name === "WalletNotSelectedError") {
+    } catch (err: unknown) {
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "name" in err &&
+        (err as { name?: string }).name === "WalletNotSelectedError"
+      ) {
         modalRef.current?.open();
       } else {
         console.error("Sign in failed", err);
