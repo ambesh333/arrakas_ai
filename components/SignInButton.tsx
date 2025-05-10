@@ -24,7 +24,8 @@ export default function SignInButton() {
       const signedMessage = await signMessage(encodedMessage);
       const signature = Buffer.from(signedMessage).toString("hex");
 
-      const res = await fetch("http://localhost:8000/auth/signin", {
+      const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
+      const res = await fetch(`${baseEndpoint}/auth/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

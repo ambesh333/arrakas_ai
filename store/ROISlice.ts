@@ -13,7 +13,7 @@ const initialState: RoiState = {
 };
 
 export const fetchRoiData = createAsyncThunk('roi/fetchRoiData', async () => {
-    const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001";
+    const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
     const response = await fetch(`${baseEndpoint}/roi`);
     return response.json();
 });
