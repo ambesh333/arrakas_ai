@@ -6,20 +6,17 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import type { WalletName } from "@solana/wallet-adapter-base";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { setSigned, resetSigned } from "@/store/authSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 
 export default function ConnectWallet() {
   const { publicKey, wallets, select, connect, signMessage, disconnect } =
     useWallet();
-  const dispatch = useDispatch();
   const router = useRouter();
 
   // Redux-driven signed state
-  const reduxSignature = useSelector((s: RootState) => s.auth.signature);
-  const hasSigned = Boolean(reduxSignature);
+  const hasSigned = useSelector((s: RootState) => s.auth.auth);
 
   // Local UI state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,30 +75,29 @@ export default function ConnectWallet() {
         "Sign to verify your identity on Arrakas AI"
       );
       const signedBuf = await signMessage(msg);
-      const hex = Buffer.from(signedBuf).toString("hex");
+      if (signedBuf) {
+        router.push("/chat");
+      }
 
-      dispatch(setSigned(hex));
-      router.push("/chat");
     } catch (err) {
       console.error("Signing failed", err);
     } finally {
       setLoading(false);
     }
-  }, [publicKey, signMessage, dispatch, router]);
+  }, [publicKey, signMessage, router]);
 
   // Disconnect and reset auth
   const handleDisconnect = useCallback(async () => {
     setLoading(true);
     try {
       await disconnect();
-      dispatch(resetSigned());
       setSelectedWallet("");
     } catch (err) {
       console.error("Disconnect failed", err);
     } finally {
       setLoading(false);
     }
-  }, [disconnect, dispatch]);
+  }, [disconnect]);
 
   // Determine button label
   let label: string;

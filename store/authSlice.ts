@@ -1,26 +1,22 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface AuthState {
-  signed: boolean;
-  signature: string | null;
+  auth: boolean;
 }
 
 const initialState: AuthState = {
-  signed: false,
-  signature: null,
+  auth: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setSigned: (state, action: PayloadAction<string>) => {
-      state.signed = true;
-      state.signature = action.payload;
+    setSigned: (state) => {
+      state.auth = true;
     },
     resetSigned: (state) => {
-      state.signed = false;
-      state.signature = null;
+      state.auth = false;
     },
   },
 });
