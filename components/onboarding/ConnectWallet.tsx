@@ -6,8 +6,10 @@ import Image from "next/image";
 import { X } from "lucide-react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletName } from "@solana/wallet-adapter-base";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
+import { setSigned } from '@/store/authSlice';
+import { useRouter } from 'next/navigation';
 
 
 interface ConnectWalletProps {
@@ -23,14 +25,15 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
     signMessage,
   } = useWallet();
 
-  const reduxSignature = useSelector((s: RootState) => s.auth.signature);
+  const hasSigned = useSelector((s: RootState) => s.auth.auth);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<WalletName | null>(null);
   const [mounted, setMounted] = useState(false);
 
   const isConnected = Boolean(publicKey);
-  const hasSigned = Boolean(reduxSignature);
 
   useEffect(() => {
     setMounted(true);
@@ -73,14 +76,18 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
       });
       const data = await res.json();
       if (data.user) {
+        dispatch(setSigned());
         if (onConnect) onConnect();
+        router.push("/chat");
+      } else {
+        // Handle sign-up failure
       }
     } catch (err) {
       console.error("Sign in failed", err);
     } finally {
       setLoading(false);
     }
-  }, [publicKey, signMessage, onConnect]);
+  }, [publicKey, signMessage, dispatch, router, onConnect]);
 
   // const handleDisconnect = useCallback(async () => {
   //   setLoading(true);

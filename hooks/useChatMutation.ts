@@ -2,7 +2,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001";
+const baseEndpoint = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 export const useChatMutation = (
   address: any,

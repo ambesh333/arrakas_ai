@@ -33,19 +33,19 @@ export default function Referral() {
             <div className="rounded-xl shadow p-4 bg-zinc-800 flex flex-col gap-4">
               <div className="flex items-center">
                 <span className="text-base text-white font-sans font-semibold">Get extra points by referring your friends</span>
-              </div>
+            </div>
               <div className="border border-zinc-700 rounded-xl p-4 flex items-center justify-between">
-                <div>
+              <div>
                   <p className="text-xs text-zinc-400 font-sans">Your referral link</p>
-                  <p className="text-lg font-mono text-white">{referralCode}</p>
-                </div>
-                <button
-                  onClick={handleCopy}
+                <p className="text-lg font-mono text-white">{referralCode}</p>
+              </div>
+              <button
+                onClick={handleCopy}
                   className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 rounded-md text-sm font-sans transition"
-                >
-                  {copied ? <Check size={16} /> : <Copy size={16} />}
-                  {copied ? "Copied" : "Copy"}
-                </button>
+              >
+                {copied ? <Check size={16} /> : <Copy size={16} />}
+                {copied ? "Copied" : "Copy"}
+              </button>
               </div>
             <Button className="w-full" size="lg" onClick={() => router.push("/chat")}>Explore App</Button>
             </div>
@@ -53,9 +53,9 @@ export default function Referral() {
           {/* Footer */}
           <div className="w-full flex flex-col gap-4 px-8 pb-4">
             <div className="w-full flex justify-between items-center text-xs text-zinc-400 bg-transparent border-t border-zinc-700/60 pt-4">
-              <span className="hover:underline cursor-pointer font-sans">Twitter</span>
-              <span className="font-semibold text-white font-mono">arrakas</span>
-              <span className="hover:underline cursor-pointer font-sans">Docs</span>
+            <span className="hover:underline cursor-pointer font-sans">Twitter</span>
+            <span className="font-semibold text-white font-mono">arrakas</span>
+            <span className="hover:underline cursor-pointer font-sans">Docs</span>
             </div>
           </div>
         </div>
@@ -69,8 +69,8 @@ export default function Referral() {
           loop
           muted
           playsInline
-        />
-      </div>
+          />
+        </div>
 
       </div>
     </div>

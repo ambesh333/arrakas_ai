@@ -5,12 +5,15 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import GlowButton from "./ui/glowButton";
 import OnboardingModal, { OnboardingModalRef } from "./onboarding/OnboardingModal";
+import { useDispatch } from 'react-redux';
+import { setSigned } from '@/store/authSlice';
 
 export default function SignInButton() {
   const modalRef = useRef<OnboardingModalRef>(null);
   const { publicKey, signMessage } = useWallet();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -37,6 +40,7 @@ export default function SignInButton() {
       if (res.ok) {
         const data = await res.json();
         if (data.user) {
+          dispatch(setSigned());
           router.push("/chat");
         } else {
           modalRef.current?.open();
