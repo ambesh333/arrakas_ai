@@ -14,7 +14,7 @@ interface ChatState {
   chatMode: boolean;
   input: string;
   messages: ChatMessage[];
-  isProcessing: boolean; 
+  isProcessing: boolean;
   threadId: string | null;
   missariEnabled: boolean;
 }
@@ -26,7 +26,7 @@ const initialState: ChatState = {
   messages: [],
   isProcessing: false, // Initialize processing state
   threadId: null,
-    missariEnabled: false,
+  missariEnabled: false,
 };
 
 const chatSlice = createSlice({
@@ -62,26 +62,29 @@ const chatSlice = createSlice({
     setIsProcessing(state, action: PayloadAction<boolean>) {
       state.isProcessing = action.payload;
     },
-    setThreadId(state, action: PayloadAction<string | null>) { 
+    setThreadId(state, action: PayloadAction<string | null>) {
       state.threadId = action.payload;
     },
     toggleMissari(state) {
-        state.missariEnabled = !state.missariEnabled;
-      },
-      
+      state.missariEnabled = !state.missariEnabled;
+    },
+    initializeMessages(state, action: PayloadAction<ChatMessage[]>) {
+      state.messages = action.payload;
+    },
   },
 });
 
-export const { 
-  setQuery, 
-  setChatMode, 
-  setInput, 
-  addMessage, 
-  updateMessage, 
+export const {
+  setQuery,
+  setChatMode,
+  setInput,
+  addMessage,
+  updateMessage,
   clearMessages,
-  setIsProcessing ,
+  setIsProcessing,
   setThreadId,
-    toggleMissari
+  toggleMissari,
+  initializeMessages
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
