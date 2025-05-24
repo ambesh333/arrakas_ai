@@ -6,7 +6,7 @@ import { setQuery, toggleMissari } from "@/store/chatSlice";
 import { Input } from "@/components/ui/input";
 import { Search, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Tooltip,
   TooltipContent,

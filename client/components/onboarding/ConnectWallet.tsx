@@ -148,7 +148,7 @@ const ConnectWallet: FC<ConnectWalletProps> = ({ onConnect }) => {
         {/* Right Panel */}
         <div className="hidden md:block w-[60%] h-full relative rounded-2xl overflow-hidden">
           <Image
-            src="/connect_walletbg.jpg"
+            src="/refer_earn.png"
             alt="Connect Wallet Background"
             fill
             className="object-cover"

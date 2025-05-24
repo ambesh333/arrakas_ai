@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Command, LucideIcon } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 
 const LeftComponent: React.FC = () => {
     return (

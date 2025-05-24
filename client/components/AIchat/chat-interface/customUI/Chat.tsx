@@ -19,7 +19,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ text, sender, userAddress, tool
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
       <div
-        className={`relative max-w-xs w-full p-4 rounded-lg shadow-lg ${
+        className={`relative max-w-2xl w-full p-4 rounded-lg shadow-lg ${
           isUser
             ? "bg-zinc-500/10 text-white"
             : "bg-transparent backdrop-blur-lg border border-white/20 text-white"
