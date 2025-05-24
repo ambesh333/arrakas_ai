@@ -11,18 +11,18 @@ router.get('/healthCheck', (req: Request, res: Response) => {
 });
 
 
-const pollHealthCheck = () => {
-    const healthCheckUrl = process.env.HEALTH_CHECK_URL || "";
-    setInterval(async () => {
-        try {
-            const response = await axios.get(healthCheckUrl);
-            console.log(response.data);
-        } catch (error) {
-            console.error('Health Check Failed:', error);
-        }
-    }, 15 * 60 * 1000);
-};
+// const pollHealthCheck = () => {
+//     const healthCheckUrl = process.env.HEALTH_CHECK_URL || "";
+//     setInterval(async () => {
+//         try {
+//             const response = await axios.get(healthCheckUrl);
+//             console.log(response.data);
+//         } catch (error) {
+//             console.error('Health Check Failed:', error);
+//         }
+//     }, 15 * 60 * 1000);
+// };
 
-pollHealthCheck();
+// pollHealthCheck();
 
 export default router;
