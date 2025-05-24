@@ -38,7 +38,7 @@ function ChatSection() {
     <ChatBox />
   </div>
       <div className="sticky bottom-0 left-0 right-0 px-4 py-2 ">
-        <Card className="w-full rounded-lg shadow-md bg-slate-900/50">
+        <Card className="w-full rounded-lg shadow-md ">
           <ActionSearchBar
             onSearchClick={handleSearchClick}
           />

@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import ROICarousel from './ROICarousel';
 import InfoCard from './InfoCard';
+import ReferCard from './ReferalCard';
+
 
 const RightComponent: React.FC = () => {
     return (
@@ -10,6 +11,7 @@ const RightComponent: React.FC = () => {
             <div className="grid gap-6">
                 {/* <ROICarousel /> */}
                 <InfoCard/>
+                <ReferCard/>
             </div>
         </div>
     );

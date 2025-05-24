@@ -2,18 +2,10 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { setQuery, toggleMissari } from "@/store/chatSlice";
+import { setQuery } from "@/store/chatSlice";
 import { Input } from "@/components/ui/input";
 import { Search, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "../../ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
 interface ActionSearchBarProps {
   onSearchClick: (label: string) => void;
 }
@@ -22,7 +14,6 @@ export default function ActionSearchBar({ onSearchClick }: ActionSearchBarProps)
   const dispatch = useDispatch<AppDispatch>();
   const query = useSelector((state: RootState) => state.chat.query);
   const isProcessing = useSelector((state: RootState) => state.chat.isProcessing);
-  const missariEnabled = useSelector((state: RootState) => state.chat.missariEnabled);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setQuery(e.target.value));
@@ -38,27 +29,6 @@ export default function ActionSearchBar({ onSearchClick }: ActionSearchBarProps)
   return (
     <motion.div className="w-full max-w-xl mx-auto">
       <div className="relative flex justify-between items-center gap-2">
-        {/* Missari Toggle Button with Tooltip */}
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                onClick={() => dispatch(toggleMissari())}
-                variant={missariEnabled ? "default" : "outline"}
-                className={`h-9 px-4 py-2 text-sm ${
-                  missariEnabled ? "bg-blue-800 text-white hover:bg-blue-700" : ""
-                }`}
-              >
-                Messari
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="text-xs max-w-xs text-center">
-              Turn on Messari-powered AI chat
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
         {/* Search Form */}
         <form onSubmit={handleSubmit} className="relative flex-1">
           <Input

@@ -1,20 +1,16 @@
 "use client"
 
 import {
-    Activity,
-    Diff
+    Activity
 } from "lucide-react"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+
 
 
 
 import ChatSection from "@/components/AIchat/chat-interface/chat"
 import RightComponent from "@/components/AIchat/RightComponent"
-import LeftComponent from "@/components/AIchat/LeftComponent"
-import { Tabs } from "@/components/ui/tabs"
-
 
 export default function Dashboard() {
     return (
